@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes" />
   <title>George &amp; Jessica — Our Anniversary</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -10,7 +10,7 @@
 
   <style>
     /* ═══════════════════════════════════════════════════════
-       RESET & DESIGN TOKENS — refined, warm, romantic
+       RESET & DESIGN TOKENS
     ═══════════════════════════════════════════════════════ */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
@@ -43,7 +43,7 @@
       overflow-x: hidden;
     }
 
-    /* ── floating hearts layer (gentler on mobile) ── */
+    /* ── floating hearts layer (extremely gentle on mobile) ── */
     .hearts-layer {
       position: fixed;
       inset: 0;
@@ -54,19 +54,22 @@
 
     .heart {
       position: absolute;
-      bottom: -60px;
+      bottom: -80px;
       opacity: 0;
       animation: heart-rise linear infinite;
       color: var(--rose-l);
-      will-change: transform, opacity;
+      will-change: transform;
+      /* softer rendering on mobile */
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
     }
 
-    /* slower, softer floating animation */
+    /* much slower, smoother rise */
     @keyframes heart-rise {
-      0%   { transform: translateY(0) rotate(-6deg) scale(0.7);  opacity: 0; }
-      12%  { opacity: 0.22; }
-      88%  { opacity: 0.08; }
-      100% { transform: translateY(-115vh) rotate(10deg) scale(1.05); opacity: 0; }
+      0%   { transform: translateY(0) rotate(-4deg) scale(0.7);  opacity: 0; }
+      15%  { opacity: 0.18; }
+      85%  { opacity: 0.06; }
+      100% { transform: translateY(-120vh) rotate(6deg) scale(1.02); opacity: 0; }
     }
 
     .site { position: relative; z-index: 1; }
@@ -238,6 +241,7 @@
       animation: a-fade 1.1s ease 1.2s forwards;
     }
 
+    /* ── SCROLL HINT (much slower bounce) ── */
     .scroll-hint {
       margin-top: 2.8rem;
       display: flex;
@@ -263,12 +267,12 @@
       border-bottom: 1.5px solid var(--brass);
       transform: rotate(45deg);
       opacity: .7;
-      animation: chevron-bob 2.8s ease-in-out infinite;
+      animation: chevron-bob 4s ease-in-out infinite;  /* SLOWER */
     }
 
     @keyframes chevron-bob {
       0%,100% { transform: rotate(45deg) translate(0,0); }
-      50%      { transform: rotate(45deg) translate(4px,4px); }
+      50%      { transform: rotate(45deg) translate(3px,3px); }
     }
 
     /* ═══════════════════════════════════════════════════════
@@ -456,7 +460,7 @@
     }
 
     /* ═══════════════════════════════════════════════════════
-       POEMS — elegant cards
+       POEMS
     ═══════════════════════════════════════════════════════ */
     .poem-card {
       background: var(--paper);
@@ -511,7 +515,7 @@
     }
 
     /* ═══════════════════════════════════════════════════════
-       MUSIC TAB — embedded playlist, maintains visual harmony
+       MUSIC TAB
     ═══════════════════════════════════════════════════════ */
     .music-embed-wrapper {
       background: var(--paper);
@@ -529,7 +533,7 @@
     }
 
     /* ═══════════════════════════════════════════════════════
-       OUR STORY — typewriter
+       OUR STORY — typewriter with softer cursor
     ═══════════════════════════════════════════════════════ */
     .story-wrap {
       background: var(--paper);
@@ -572,19 +576,21 @@
       word-break: break-word;
     }
 
+    /* Cursor — much slower blink, gentler */
     .cursor-blink {
       display: inline-block;
       width: 2px;
       height: 1.05em;
       background: var(--rose);
-      margin-left: 1px;
+      margin-left: 2px;
       vertical-align: text-bottom;
-      animation: blink .9s step-end infinite;
+      animation: gentle-blink 1.4s step-end infinite;
+      opacity: 0.8;
     }
 
-    @keyframes blink {
-      0%,100% { opacity: 1; }
-      50%      { opacity: 0; }
+    @keyframes gentle-blink {
+      0%, 100% { opacity: 1; }
+      50%      { opacity: 0.2; }
     }
 
     .story-controls {
@@ -648,14 +654,22 @@
 
     .site-footer .hrt { color: var(--rose-l); }
 
+    /* Keyframes for initial fade-ins (unchanged) */
     @keyframes a-down { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes a-up   { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes a-fade { from { opacity: 0; } to { opacity: 1; } }
 
+    /* Reduce motion if user prefers (also helps mobile) */
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .heart { display: none; } /* disable hearts entirely for accessibility */
     }
 
+    /* Mobile adjustments */
     @media (max-width: 600px) {
       .nav-tab      { padding: .48rem .9rem; font-size: .9rem; }
       .timer-dot    { display: none; }
@@ -664,6 +678,8 @@
       .poem-ornament{ font-size: 4rem; top: .8rem; right: 1.2rem; }
       .nav-pills    { gap: 0; }
       .nav-tab      { padding: .45rem .8rem; font-size: .85rem; }
+      /* slower animation for hearts on mobile already set */
+      .heart { animation-duration: 24s !important; }
     }
     @media (max-width: 480px) {
       .gallery-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
@@ -721,7 +737,7 @@
 
   <main class="content-area">
 
-    <!-- IMAGES PANEL -->
+    <!-- IMAGES PANEL (unchanged, all photos) -->
     <section id="panel-images" class="panel active" role="tabpanel">
       <h2 class="sec-title">Our <em>Memories</em></h2>
       <div class="sec-rule" aria-hidden="true">♡</div>
@@ -742,7 +758,7 @@
       </div>
     </section>
 
-    <!-- POEMS PANEL -->
+    <!-- POEMS PANEL (full poems) -->
     <section id="panel-poems" class="panel" role="tabpanel">
       <h2 class="sec-title">Words <em>Written</em> for You</h2>
       <div class="sec-rule" aria-hidden="true">♡</div>
@@ -757,7 +773,7 @@
       <div class="poem-card"><span class="poem-ornament">❝</span><p class="poem-num">Poem VIII</p><h3 class="poem-title">Impression</h3><div class="poem-body">Searching beneath what is known, uncovering the edges of presence, tracing the curves with my fingertips, creating a slow impression with each deliberate touch with gentle glides like spice. With each impression, a map formed in memory through action and suggestion.</div></div>
     </section>
 
-    <!-- MUSIC PANEL — embedded playlist, matches visual language -->
+    <!-- MUSIC PANEL -->
     <section id="panel-music" class="panel" role="tabpanel">
       <h2 class="sec-title">Our <em>Soundtrack</em></h2>
       <div class="sec-rule" aria-hidden="true">♡</div>
@@ -810,7 +826,7 @@
   }
   updateTimer(); setInterval(updateTimer, 1000);
 
-  // GENTLE FLOATING HEARTS (slower, less frequent on mobile)
+  // GENTLE FLOATING HEARTS (very slow, sparse)
   const heartsLayer = document.getElementById('heartsLayer');
   const heartGlyphs = ['\u2661', '\u2665', '\u2764', '\u2726'];
   function spawnHeart() {
@@ -818,16 +834,19 @@
     el.className = 'heart';
     el.textContent = heartGlyphs[Math.floor(Math.random() * heartGlyphs.length)];
     el.style.left = (Math.random() * 100) + 'vw';
-    el.style.fontSize = (9 + Math.random() * 11) + 'px';
-    const dur = 14 + Math.random() * 18;   // slower duration
-    const del = Math.random() * 12;        // longer delay between starts
+    // smaller, softer hearts on mobile
+    const isMobile = window.innerWidth < 700;
+    el.style.fontSize = (isMobile ? 8 : 10) + (Math.random() * 8) + 'px';
+    const dur = 22 + Math.random() * 16;  // 22-38 seconds
+    const del = Math.random() * 14;
     el.style.animationDuration = dur + 's';
     el.style.animationDelay = del + 's';
     heartsLayer.appendChild(el);
-    setTimeout(() => el.remove(), (dur + del + 1) * 1000);
+    setTimeout(() => el.remove(), (dur + del + 2) * 1000);
   }
-  for (let i = 0; i < 12; i++) spawnHeart();  // fewer initial hearts
-  setInterval(spawnHeart, 3200);  // slower spawn rate
+  // fewer initial hearts
+  for (let i = 0; i < 8; i++) setTimeout(() => spawnHeart(), i * 400);
+  setInterval(spawnHeart, 4800);  // slow spawn
 
   // TAB NAVIGATION
   function switchTab(name, btn) {
@@ -841,7 +860,7 @@
   }
   document.addEventListener('DOMContentLoaded', () => { setTimeout(() => { document.querySelector('.panel.active')?.classList.add('visible'); }, 80); });
 
-  // TYPEWRITER (story)
+  // TYPEWRITER (full story) — unchanged but with slower cursor via CSS
   const STORY_PARAGRAPHS = [
     "9th March 2025\n\nToday I matched with Jessica.\n\nWhat one learns about a person from a dating profile is only mere fragments that, with careful attention, can reconstruct the whole. She is Ghanaian, dark-skinned. And there was something presented within those fragments that arrested me—made me pause, think, catch a glimpse of something I cannot yet name. She unwinds herself with crochet, music, and cooking. She has a cat named Coco, and she enjoys the occasional cocktail or glass of wine. Having been born on the 12th of August places her in the constellation of Leo, if one follows such things.\n\nAs I read the preliminaries, I came upon her instruction: <i>The best way to ask me out is by planning a date and telling me when and where.</i>\n\nI remember reading that, then thinking and contemplating: someone finally understands intention as the purest form of respect. I liked that immediately. It is direct, confident, and refreshingly clear. Here is a woman who knows precisely what she wants.",
     "It began, as all things do, with a photograph. This took place at 8:50 p.m.\n\nI was scrolling without purpose until one image made me stop. There was an ease in it that could not have been manufactured—an effortless confidence, as though she had decided the dress was incidental and that she herself was the point. She was not merely wearing it; she was commanding it. For all intents and purposes, the dress was doing her a favour, not the other way round. I liked the photograph.",
