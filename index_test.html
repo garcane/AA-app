@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>George &amp; Jessica — Our Anniversary</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ═══════════════════════════════════════════════════════
+       RESET & DESIGN TOKENS — refined, warm, romantic
+    ═══════════════════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --bg:        #f4f1ed;
+      --paper:     #ffffff;
+      --warm-1:    #ede8e0;
+      --warm-2:    #e0d8cc;
+      --rose:      #9a6660;      /* desaturated dusty rose */
+      --rose-d:    #582f2c;      /* deep burgundy-rose for headings */
+      --rose-l:    #c9aaa4;      /* light misty rose */
+      --brass:     #a48454;      /* warm brass, not bright gold */
+      --text:      #1b1210;
+      --text-2:    #7a6660;
+      --text-3:    #b8aba4;
+      --border:    rgba(154, 102, 96, 0.13);
+      --border-2:  rgba(154, 102, 96, 0.24);
+      --sh-xs: 0 1px 3px rgba(27,18,16,.05), 0 1px 2px rgba(27,18,16,.04);
+      --sh-sm: 0 2px 8px rgba(27,18,16,.07), 0 1px 3px rgba(27,18,16,.04);
+      --sh-md: 0 4px 20px rgba(27,18,16,.09), 0 2px 6px rgba(27,18,16,.05);
+      --sh-lg: 0 8px 40px rgba(27,18,16,.11), 0 3px 10px rgba(27,18,16,.06);
+    }
+
+    body {
+      font-family: 'Crimson Pro', Georgia, serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+      overflow-x: hidden;
+    }
+
+    /* ── floating hearts layer ── */
+    .hearts-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .heart {
+      position: absolute;
+      bottom: -60px;
+      opacity: 0;
+      animation: heart-rise linear infinite;
+      color: var(--rose-l);
+      will-change: transform, opacity;
+    }
+
+    @keyframes heart-rise {
+      0%   { transform: translateY(0) rotate(-8deg) scale(0.8);  opacity: 0; }
+      8%   { opacity: 0.20; }
+      92%  { opacity: 0.07; }
+      100% { transform: translateY(-115vh) rotate(14deg) scale(1.06); opacity: 0; }
+    }
+
+    .site { position: relative; z-index: 1; }
+
+    /* ═══════════════════════════════════════════════════════
+       HERO SECTION
+    ═══════════════════════════════════════════════════════ */
+    .hero {
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4rem 1.5rem 3rem;
+      position: relative;
+      background: linear-gradient(168deg, #f0ebe3 0%, #f3f0ea 45%, #ece5da 100%);
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 45% 38% at 12% 88%, rgba(154,102,96,.08)  0%, transparent 65%),
+        radial-gradient(ellipse 38% 42% at 88% 12%, rgba(164,132, 84,.07) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: .92rem;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      color: var(--brass);
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: a-down .9s cubic-bezier(.22,1,.36,1) .15s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(3rem, 8.5vw, 6.2rem);
+      line-height: 1.0;
+      letter-spacing: -.01em;
+      color: var(--rose-d);
+      opacity: 0;
+      animation: a-down 1s cubic-bezier(.22,1,.36,1) .3s forwards;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--rose);
+    }
+
+    .hero-rule {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      justify-content: center;
+      max-width: 200px;
+      margin: 1.6rem auto 0;
+      color: var(--brass);
+      font-size: .82rem;
+      opacity: 0;
+      animation: a-fade 1s ease .6s forwards;
+    }
+    .hero-rule::before,
+    .hero-rule::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--brass);
+      opacity: .45;
+    }
+
+    .bear-frame {
+      margin: 2rem auto 1.8rem;
+      width: min(230px, 60vw);
+      opacity: 0;
+      animation: a-up 1s cubic-bezier(.22,1,.36,1) .48s forwards;
+      position: relative;
+    }
+
+    .bear-frame::after {
+      content: '';
+      position: absolute;
+      inset: -14px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(154,102,96,.10) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .bear-frame img {
+      width: 100%;
+      border-radius: 50%;
+      border: 2px solid rgba(201,170,164,.45);
+      box-shadow: var(--sh-lg), 0 0 0 10px rgba(237,232,224,.65);
+      display: block;
+    }
+
+    .timer-block {
+      opacity: 0;
+      animation: a-up 1s cubic-bezier(.22,1,.36,1) .78s forwards;
+    }
+
+    .timer-eyebrow {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--text-2);
+      margin-bottom: .95rem;
+      letter-spacing: .04em;
+    }
+
+    .timer-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: clamp(.45rem, 2vw, 1.1rem);
+    }
+
+    .timer-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .28rem;
+    }
+
+    .timer-val {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 500;
+      font-size: clamp(2.4rem, 6.5vw, 4rem);
+      line-height: 1;
+      color: var(--rose-d);
+      letter-spacing: -.02em;
+      font-variant-numeric: tabular-nums;
+      min-width: 2ch;
+      text-align: center;
+    }
+
+    .timer-cap {
+      font-size: .58rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--text-3);
+    }
+
+    .timer-dot {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      color: var(--rose-l);
+      line-height: 1;
+      padding-bottom: 1.3rem;
+      opacity: .6;
+    }
+
+    .hero-tagline {
+      margin: 2rem auto 0;
+      max-width: 380px;
+      font-size: 1.08rem;
+      line-height: 1.75;
+      font-style: italic;
+      color: var(--text-2);
+      opacity: 0;
+      animation: a-fade 1.1s ease 1.2s forwards;
+    }
+
+    .scroll-hint {
+      margin-top: 2.8rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .45rem;
+      cursor: pointer;
+      opacity: 0;
+      animation: a-fade 1s ease 1.9s forwards;
+    }
+
+    .scroll-hint span {
+      font-size: .66rem;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      color: var(--brass);
+    }
+
+    .scroll-chevron {
+      width: 16px;
+      height: 16px;
+      border-right: 1.5px solid var(--brass);
+      border-bottom: 1.5px solid var(--brass);
+      transform: rotate(45deg);
+      opacity: .7;
+      animation: chevron-bob 2.2s ease-in-out infinite;
+    }
+
+    @keyframes chevron-bob {
+      0%,100% { transform: rotate(45deg) translate(0,0); }
+      50%      { transform: rotate(45deg) translate(3px,3px); }
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       PILL NAVIGATION
+    ═══════════════════════════════════════════════════════ */
+    .nav-bar {
+      background: rgba(244,241,237,.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-inner {
+      display: flex;
+      justify-content: center;
+      padding: .7rem 1rem;
+    }
+
+    .nav-pills {
+      display: flex;
+      background: var(--warm-1);
+      border-radius: 100px;
+      padding: 3px;
+      gap: 2px;
+    }
+
+    .nav-tab {
+      padding: .52rem 1.55rem;
+      border-radius: 100px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      letter-spacing: .05em;
+      border: none;
+      background: transparent;
+      color: var(--text-2);
+      cursor: pointer;
+      transition: background .22s ease, color .22s ease, box-shadow .22s ease;
+      white-space: nowrap;
+      touch-action: manipulation;
+      min-height: 40px;
+    }
+
+    .nav-tab:hover:not(.active) { color: var(--rose); }
+
+    .nav-tab.active {
+      background: var(--paper);
+      color: var(--rose-d);
+      box-shadow: var(--sh-sm);
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       MAIN CONTENT PANELS
+    ═══════════════════════════════════════════════════════ */
+    .content-area {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 3.5rem 1.5rem 7rem;
+    }
+
+    .panel {
+      display: none;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity .38s cubic-bezier(.22,1,.36,1),
+                  transform .38s cubic-bezier(.22,1,.36,1);
+    }
+
+    .panel.active  { display: block; }
+    .panel.visible { opacity: 1; transform: translateY(0); }
+
+    .sec-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(2.2rem, 5.5vw, 3.3rem);
+      line-height: 1.1;
+      color: var(--rose-d);
+      text-align: center;
+    }
+
+    .sec-title em { font-style: italic; font-weight: 400; color: var(--rose); }
+
+    .sec-rule {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      justify-content: center;
+      color: var(--brass);
+      font-size: .82rem;
+      margin: .7rem 0 .55rem;
+    }
+
+    .sec-rule::before,
+    .sec-rule::after {
+      content: '';
+      flex: 1;
+      max-width: 68px;
+      height: 1px;
+      background: var(--brass);
+      opacity: .38;
+    }
+
+    .sec-sub {
+      text-align: center;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--text-2);
+      margin-bottom: 2.8rem;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       GALLERY — POLAROID GRID (full actual images)
+    ═══════════════════════════════════════════════════════ */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 1.6rem;
+    }
+
+    .polaroid {
+      background: #ffffff;
+      border-radius: 2px;
+      padding: 9px 9px 46px;
+      box-shadow: var(--sh-md);
+      position: relative;
+      transition: transform .32s cubic-bezier(.22,1,.36,1),
+                  box-shadow .32s ease;
+      cursor: pointer;
+    }
+
+    /* organic tilt */
+    .polaroid:nth-child(1) { transform: rotate(-1.4deg); }
+    .polaroid:nth-child(2) { transform: rotate( 1.8deg); }
+    .polaroid:nth-child(3) { transform: rotate(-0.5deg); }
+    .polaroid:nth-child(4) { transform: rotate( 2.2deg); }
+    .polaroid:nth-child(5) { transform: rotate(-1.2deg); }
+    .polaroid:nth-child(6) { transform: rotate( 0.9deg); }
+    .polaroid:nth-child(7) { transform: rotate( 1.3deg); }
+    .polaroid:nth-child(8) { transform: rotate(-1.0deg); }
+    .polaroid:nth-child(9) { transform: rotate( 0.4deg); }
+    .polaroid:nth-child(10){ transform: rotate(-1.6deg); }
+    .polaroid:nth-child(11){ transform: rotate( 1.1deg); }
+    .polaroid:nth-child(12){ transform: rotate(-0.8deg); }
+
+    .polaroid:hover {
+      transform: rotate(0deg) scale(1.045) translateY(-6px) !important;
+      box-shadow: var(--sh-lg);
+      z-index: 5;
+    }
+
+    .polaroid-img {
+      aspect-ratio: 1;
+      background: var(--warm-1);
+      width: 100%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .polaroid-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .polaroid-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: .82rem;
+      color: var(--text-2);
+      background: inherit;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       POEMS — elegant cards
+    ═══════════════════════════════════════════════════════ */
+    .poem-card {
+      background: var(--paper);
+      border-radius: 3px;
+      padding: 2.8rem 2.5rem 2.4rem 2.8rem;
+      margin-bottom: 1.8rem;
+      box-shadow: var(--sh-sm);
+      border-left: 2px solid var(--rose-l);
+      position: relative;
+      transition: box-shadow .25s ease;
+    }
+
+    .poem-card:hover { box-shadow: var(--sh-md); }
+
+    .poem-ornament {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 5.5rem;
+      line-height: .65;
+      color: var(--warm-2);
+      position: absolute;
+      top: 1.3rem;
+      right: 1.8rem;
+      user-select: none;
+      font-weight: 300;
+      pointer-events: none;
+    }
+
+    .poem-num {
+      font-size: .7rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--brass);
+      margin-bottom: .3rem;
+    }
+
+    .poem-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 500;
+      font-size: 1.5rem;
+      color: var(--rose-d);
+      margin-bottom: 1.4rem;
+      line-height: 1.2;
+    }
+
+    .poem-body {
+      font-size: 1.08rem;
+      line-height: 2;
+      color: var(--text);
+      font-style: italic;
+      white-space: pre-line;
+      max-width: 62ch;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       OUR STORY — typewriter + vintage paper effect
+    ═══════════════════════════════════════════════════════ */
+    .story-wrap {
+      background: var(--paper);
+      border-radius: 3px;
+      box-shadow: var(--sh-md);
+      overflow: hidden;
+    }
+
+    .story-inner {
+      display: flex;
+      min-height: 300px;
+    }
+
+    .story-gutter {
+      width: 52px;
+      flex-shrink: 0;
+      background: var(--warm-1);
+      border-right: 1px solid rgba(154,102,96,.14);
+      position: relative;
+    }
+
+    .story-gutter::after {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0; right: -1px;
+      width: 1px;
+      background: rgba(200,60,60,.12);
+    }
+
+    .story-body {
+      flex: 1;
+      min-width: 0;
+      padding: clamp(1.8rem, 4vw, 2.8rem);
+    }
+
+    #typewriter-output {
+      font-size: clamp(1rem, 2.2vw, 1.14rem);
+      line-height: 2.05;
+      color: var(--text);
+      word-break: break-word;
+    }
+
+    .cursor-blink {
+      display: inline-block;
+      width: 2px;
+      height: 1.05em;
+      background: var(--rose);
+      margin-left: 1px;
+      vertical-align: text-bottom;
+      animation: blink .9s step-end infinite;
+    }
+
+    @keyframes blink {
+      0%,100% { opacity: 1; }
+      50%      { opacity: 0; }
+    }
+
+    .story-controls {
+      display: flex;
+      gap: .7rem;
+      padding: 1.35rem 1.8rem;
+      border-top: 1px solid var(--border);
+      background: var(--warm-1);
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .btn {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      letter-spacing: .04em;
+      padding: .58rem 1.55rem;
+      border-radius: 100px;
+      cursor: pointer;
+      transition: background .2s ease, color .2s ease, box-shadow .2s ease;
+      touch-action: manipulation;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-outline {
+      border: 1px solid var(--border-2);
+      background: transparent;
+      color: var(--text-2);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--rose);
+      color: var(--rose);
+    }
+
+    .btn-primary {
+      border: none;
+      background: var(--rose-d);
+      color: #ffffff;
+      box-shadow: var(--sh-sm);
+    }
+
+    .btn-primary:hover {
+      background: var(--rose);
+      box-shadow: var(--sh-md);
+    }
+
+    .site-footer {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      color: var(--text-3);
+      font-size: .9rem;
+      font-style: italic;
+      border-top: 1px solid var(--border);
+      background: var(--paper);
+    }
+
+    .site-footer .hrt { color: var(--rose-l); }
+
+    @keyframes a-down { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes a-up   { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes a-fade { from { opacity: 0; } to { opacity: 1; } }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+
+    @media (max-width: 600px) {
+      .nav-tab      { padding: .48rem .9rem; font-size: .9rem; }
+      .timer-dot    { display: none; }
+      .story-gutter { width: 26px; }
+      .poem-card    { padding: 2rem 1.5rem 1.8rem 2rem; }
+      .poem-ornament{ font-size: 4rem; top: .8rem; right: 1.2rem; }
+    }
+    @media (max-width: 480px) {
+      .gallery-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="hearts-layer" id="heartsLayer" aria-hidden="true"></div>
+
+<div class="site">
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="hero-eyebrow">A love story, beautifully told</p>
+    <h1 class="hero-title">George &amp; <em>Jessica</em></h1>
+    <div class="hero-rule" aria-hidden="true">♡</div>
+
+    <div class="bear-frame">
+      <img src="assets/gifs/bears.gif" alt="Two bears in love" width="230" height="230" loading="eager"
+           onerror="this.src='https://media.giphy.com/media/26FLdaDQ5f72FPbEI/giphy.gif'; this.onerror=null;" />
+    </div>
+
+    <div class="timer-block">
+      <p class="timer-eyebrow">together for</p>
+      <div class="timer-row" role="timer">
+        <div class="timer-cell"><span class="timer-val" id="t-days">000</span><span class="timer-cap">days</span></div>
+        <span class="timer-dot" aria-hidden="true">·</span>
+        <div class="timer-cell"><span class="timer-val" id="t-hours">00</span><span class="timer-cap">hours</span></div>
+        <span class="timer-dot" aria-hidden="true">·</span>
+        <div class="timer-cell"><span class="timer-val" id="t-mins">00</span><span class="timer-cap">mins</span></div>
+        <span class="timer-dot" aria-hidden="true">·</span>
+        <div class="timer-cell"><span class="timer-val" id="t-secs">00</span><span class="timer-cap">secs</span></div>
+      </div>
+    </div>
+    <p class="hero-tagline">Every photograph, every poem, every moment — kept here, just for us.</p>
+    <div class="scroll-hint" onclick="document.querySelector('.nav-bar').scrollIntoView({behavior:'smooth'})">
+      <span>explore</span>
+      <div class="scroll-chevron" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <div style="margin: 2rem auto 0; max-width: 560px; width: 100%;">
+  <iframe style="border-radius:12px" 
+    src="https://open.spotify.com/embed/playlist/418mSnNXC1B3boRX0jA0Xp?utm_source=generator" 
+    width="100%" height="152" frameBorder="0" 
+    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+    loading="lazy">
+  </iframe>
+</div>
+
+  <!-- PILL NAVIGATION -->
+  <nav class="nav-bar" aria-label="Site sections">
+    <div class="nav-inner">
+      <div class="nav-pills" role="tablist">
+        <button class="nav-tab active" role="tab" aria-selected="true" aria-controls="panel-images" id="tab-images" onclick="switchTab('images', this)">Images</button>
+        <button class="nav-tab" role="tab" aria-selected="false" aria-controls="panel-poems" id="tab-poems" onclick="switchTab('poems', this)">Poems</button>
+        <button class="nav-tab" role="tab" aria-selected="false" aria-controls="panel-story" id="tab-story" onclick="switchTab('story', this)">Our Story</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="content-area">
+
+    <!-- IMAGES PANEL — full gallery with actual images from index.html -->
+    <section id="panel-images" class="panel active" role="tabpanel">
+      <h2 class="sec-title">Our <em>Memories</em></h2>
+      <div class="sec-rule" aria-hidden="true">♡</div>
+      <p class="sec-sub">Every picture holds a thousand feelings</p>
+      <div class="gallery-grid">
+        <!-- 12 original photos with captions -->
+        <div class="polaroid"><div class="polaroid-img"><img src="./assets/images/2E07E80A.JPG" alt="Twinning moment" loading="lazy" /></div><span class="polaroid-caption">Twinning</span></div>
+        <div class="polaroid"><div class="polaroid-img"><img src="./assets/images/100_0131.JPG" alt="Golden hour" loading="lazy" /></div><span class="polaroid-caption">Caught in the moment</span></div>
+        <div class="polaroid"><div class="polaroid-img"><img src="./assets/images/100_0385.jpg" alt="Our first morning" loading="lazy" /></div><span class="polaroid-caption">Celebrations</span></div>
+        <div class="polaroid"><div class="polaroid-img"><img src="./assets/images/bb4f1ccb.jpg" alt="Dining together" loading="lazy" /></div><span class="polaroid-caption">Dining</span></div>
+        <div class="polaroid"><div class="polaroid-img"><img src="./assets/images/IMG_0370.jpg" alt="Late night talks" loading="lazy" /></div><span class="polaroid-caption">More than late night talks</span></div>
+        <div class="polaroid"><div class="polaroid-img"><img src="./assets/images/IMG_0470.jpg" alt="Us" loading="lazy" /></div><span class="polaroid-caption">Us</span></div>
+        <div class="polaroid"><div class="polaroid-img"><img src="./assets/images/IMG_1102.jpg" alt="Making memories" loading="lazy" /></div><span class="polaroid-caption">Making memories</span></div>
+        <div class="polaroid"><div class="polaroid-img"><img src="./assets/images/IMG_6034.jpg" alt="Serene moments" loading="lazy" /></div><span class="polaroid-caption">Serene moments</span></div>
+        <div class="polaroid"><div class="polaroid-img"><img src="./assets/images/IMG_7516.jpg" alt="Our favorite spot" loading="lazy" /></div><span class="polaroid-caption">Our favorite spot</span></div>
+        <div class="polaroid"><div class="polaroid-img"><img src="./assets/images/IMG_8094.jpg" alt="Sweet thoughts" loading="lazy" /></div><span class="polaroid-caption">Sweet thoughts</span></div>
+        <div class="polaroid"><div class="polaroid-img"><img src="./assets/images/IMG_8753.jpg" alt="Unforgettable" loading="lazy" /></div><span class="polaroid-caption">Unforgettable</span></div>
+        <div class="polaroid"><div class="polaroid-img"><img src="./assets/images/IMG_9923.JPG" alt="Forever" loading="lazy" /></div><span class="polaroid-caption">Forever</span></div>
+      </div>
+    </section>
+
+    <!-- POEMS PANEL — all poems preserved exactly -->
+    <section id="panel-poems" class="panel" role="tabpanel">
+      <h2 class="sec-title">Words <em>Written</em> for You</h2>
+      <div class="sec-rule" aria-hidden="true">♡</div>
+      <p class="sec-sub">From my heart, into yours</p>
+      <div class="poem-card"><span class="poem-ornament" aria-hidden="true">❝</span><p class="poem-num">Poem I</p><h3 class="poem-title">Presence</h3><div class="poem-body">Sometimes I think the wind carries her name further than I ever could. The sun does more justice to exalt her coating in chocolate and rose gold. I hear it across the plains of long grass at night with the softness of chanters from the tree. The gleaming of rays of our yellow star reminds me of her ever-present and that there's no trail long enough to leave the heart behind.</div></div>
+      <div class="poem-card"><span class="poem-ornament" aria-hidden="true">❝</span><p class="poem-num">Poem II</p><h3 class="poem-title">Persona</h3><div class="poem-body">Gentle, noble, and warm in spirit—<br>How remarkable it is that one soul,<br>so full of light, can walk this earth in material form.<br><br>Your personality is tranquil, yet it reverberates—<br>curious, kind, and resilient,<br>a harmony of warmth and wonder<br>that wraps itself around the moment.<br><br>You are spirit, that is whose passions and Enthusiasm cannot be contained. I love seeing that freedom in action<br><br>That laugh, that giggle —<br>It echoes in my mind like a choir through cathedral walls,<br>Agia in each note a symbol, each smile a stanza.<br>It lingers, elevates, consoles.<br><br>There's always a beam<br>when I name your gifts aloud—<br>Your dimples communicate a novel of excitement<br>And in that gaze, I see the girl, the woman, the future.<br><br>You were never just your beauty.<br>But like incense and its white flame<br>Your character that caught me.<br>It was the soul that imparted hope into me.<br><br>Even in fleeting moments,<br>you illuminate—<br>like a sun rising from the west,<br>setting where it shouldn't,<br>defying direction, rewriting the sky.<br><br>And for that,<br>I give thanks.</div></div>
+      <div class="poem-card"><span class="poem-ornament" aria-hidden="true">❝</span><p class="poem-num">Poem III</p><h3 class="poem-title">Desire</h3><div class="poem-body">Cloaked in ebony, with polished eyes of obsidian. And dressed in melenin. And Graced in velvet.<br><br>All capture the mind. Vivid and exquisite. For that is the anatomy of art.<br><br>The presence is like a raven flying against the mavros-coated sky, gliding like ink<br><br>Yet distance sharpens the flame, as shadow deepens light. The absence binds stronger than touch,<br>a gravity unseen, drawing soul to soul</div></div>
+      <div class="poem-card"><span class="poem-ornament" aria-hidden="true">❝</span><p class="poem-num">Poem IV</p><h3 class="poem-title">Contagion of a Smile</h3><div class="poem-body">From the first, when eyes beheld you,<br>Soft in dusk's embracing hue—<br>Came a smile, divine, eternal,<br>Warming all it wandered through.<br>Curved on lips like wine and honey,<br>Dripped in tones no words could do,<br>Lit a blaze within my spirit,<br>Love made flesh and flowing true.<br><br>Like the sun upon my winter,<br>Like a breath I never knew,<br>Touched me like the flight of doves do,<br>Bathed my soul in fire's hue.<br>Gentle lips, all joy encompassing,<br>Pulled me close, as oceans do—<br>Where your smile began its blooming,<br>So my world was made anew.<br><br>Now, wherever shadows linger,<br>You arrive, and I pursue.<br>Not with hands, but heart and marrow—<br>Not with eyes, but something through<br>Every sense that sings your presence,<br>Every ache that once withdrew—<br>You have won a thing eternal,<br>With a smile that ever grew.</div></div>
+      <div class="poem-card"><span class="poem-ornament" aria-hidden="true">❝</span><p class="poem-num">Poem V</p><h3 class="poem-title">Hours</h3><div class="poem-body">The clock struck twenty past five.<br>I carried her cream jacket; she wore my blue bomber.<br>My eyes, heavy with the day, yet hers sought mine.<br>She rested upon my shoulder,<br>Eyes rubbing away the weight of the world,<br>Finding refuge, recognition, a quiet home.<br><br>In the turn of a glance,<br>her head found its place—<br>soft, almost surrendering,<br>yet certain,<br>that within this small fortress,<br>she was shielded, cradled, and safe.<br><br>She stirred, awakening to the movement of the train.<br>Her nails, midnight violet, traced paths through my beard,<br>an exploration gentle, intimate, unspoken.<br>We smiled, teeth full,<br>laughter carried in the sway of the car,<br>a simple testament to the closeness we bore.<br><br>Here, in this brief eternity,<br>the world is silent,<br>and yet entirely alive—<br>a rhythm of breaths and glances,<br>an offering of safety and trust,<br>and the quiet sacrament of us.</div></div>
+      <div class="poem-card"><span class="poem-ornament" aria-hidden="true">❝</span><p class="poem-num">Poem VI</p><h3 class="poem-title">A Token of Affection</h3><div class="poem-body">My dearest,<br>This delicate gold bracelet, with its gentle vine of pink and violet stones, now graces your wrist.<br>Like our love, it is elegant, enduring, and born of quiet beauty.<br>May it remind you every day of how deeply you are cherished.<br>With all my affection</div></div>
+      <div class="poem-card"><span class="poem-ornament" aria-hidden="true">❝</span><p class="poem-num">Poem VII</p><h3 class="poem-title">The Geometry and Leap of Certainty</h3><div class="poem-body">The London air carried an unusual sting,<br>as if winter refused to yield.<br>While the calendar whispered of summer,<br>and the clocks prepared to leap forward—<br>threatening to steal an hour from the night—<br>time itself felt touched by frost,<br>dancing at the very edge of my eyes.<br><br>Behind us lay the warmth of clean wooden lines,<br>and the deep, blue rhythm of the jazz.<br>Under the stage lights, a streak of deep crimson<br>parted her dark hair, a quiet spark in the dark.<br>But out on the pavement, she murmured she was cold.<br><br>Her large tan jacket, turned up in pose and posture,<br>seemed to elevate her into the music of time itself.<br>I reached forward,<br>fastening the tighter button of her coat,<br>looping the double laces against the chill,<br>before pulling her into an embrace to say goodbye.<br><br>And I think, in that sudden quiet.<br>Only certainty remained.</div></div>
+      <div class="poem-card"><span class="poem-ornament" aria-hidden="true">❝</span><p class="poem-num">Poem VIII</p><h3 class="poem-title">Impression</h3><div class="poem-body">Searching beneath what is known, uncovering the edges of presence, tracing the curves with my fingertips, creating a slow impression with each deliberate touch with gentle glides like spice. With each impression, a map formed in memory through action and suggestion.</div></div>
+    </section>
+
+    <!-- OUR STORY — typewriter with full meeting narrative, robust engine -->
+    <section id="panel-story" class="panel" role="tabpanel">
+      <h2 class="sec-title">How We <em>Found</em> Each Other</h2>
+      <div class="sec-rule" aria-hidden="true">♡</div>
+      <p class="sec-sub">Written from my perspective</p>
+      <div class="story-wrap">
+        <div class="story-inner">
+          <div class="story-gutter" aria-hidden="true"></div>
+          <div class="story-body"><div id="typewriter-output" aria-live="polite"><span class="cursor-blink" aria-hidden="true"></span></div></div>
+        </div>
+        <div class="story-controls">
+          <button class="btn btn-primary" id="startBtn" onclick="startStory()">Begin the story</button>
+          <button class="btn btn-outline" id="pauseBtn" onclick="togglePause()" style="display:none">Pause</button>
+          <button class="btn btn-outline" id="restartBtn" onclick="restartStory()" style="display:none">Start again</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">Made with <span class="hrt">♡</span> — just for you, always</footer>
+</div>
+
+<script>
+  // ---------- TIMER (START DATE: 28 JUNE 2025) ----------
+  const START_DATE = new Date('2025-06-28T12:00:00');
+  function updateTimer() {
+    const diff = Math.max(0, Date.now() - START_DATE.getTime());
+    const s = Math.floor(diff / 1000);
+    const m = Math.floor(s / 60);
+    const h = Math.floor(m / 60);
+    const d = Math.floor(h / 24);
+    document.getElementById('t-days').textContent  = String(d).padStart(3, '0');
+    document.getElementById('t-hours').textContent = String(h % 24).padStart(2, '0');
+    document.getElementById('t-mins').textContent  = String(m % 60).padStart(2, '0');
+    document.getElementById('t-secs').textContent  = String(s % 60).padStart(2, '0');
+  }
+  updateTimer(); setInterval(updateTimer, 1000);
+
+  // ---------- FLOATING HEARTS ----------
+  const heartsLayer = document.getElementById('heartsLayer');
+  const heartGlyphs = ['\u2661', '\u2665', '\u2764', '\u2726'];
+  function spawnHeart() {
+    const el = document.createElement('span');
+    el.className = 'heart';
+    el.textContent = heartGlyphs[Math.floor(Math.random() * heartGlyphs.length)];
+    el.style.left = (Math.random() * 100) + 'vw';
+    el.style.fontSize = (10 + Math.random() * 12) + 'px';
+    const dur = 11 + Math.random() * 14;
+    const del = Math.random() * 8;
+    el.style.animationDuration = dur + 's';
+    el.style.animationDelay = del + 's';
+    heartsLayer.appendChild(el);
+    setTimeout(() => el.remove(), (dur + del + 1) * 1000);
+  }
+  for (let i = 0; i < 18; i++) spawnHeart();
+  setInterval(spawnHeart, 5000);
+
+  // ---------- TAB NAVIGATION ----------
+  function switchTab(name, btn) {
+    document.querySelectorAll('.nav-tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
+    btn.classList.add('active'); btn.setAttribute('aria-selected', 'true');
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active', 'visible'));
+    const panel = document.getElementById('panel-' + name);
+    panel.classList.add('active');
+    requestAnimationFrame(() => requestAnimationFrame(() => panel.classList.add('visible')));
+    window.scrollTo({ top: document.querySelector('.nav-bar').offsetTop - 2, behavior: 'smooth' });
+  }
+  document.addEventListener('DOMContentLoaded', () => { setTimeout(() => { document.querySelector('.panel.active')?.classList.add('visible'); }, 80); });
+
+  // ---------- TYPEWRITER : FULL STORY (meeting text, italic tags preserved, robust generation) ----------
+  const STORY_PARAGRAPHS = [
+    "9th March 2025\n\nToday I matched with Jessica.\n\nWhat one learns about a person from a dating profile is only mere fragments that, with careful attention, can reconstruct the whole. She is Ghanaian, dark-skinned. And there was something presented within those fragments that arrested me—made me pause, think, catch a glimpse of something I cannot yet name. She unwinds herself with crochet, music, and cooking. She has a cat named Coco, and she enjoys the occasional cocktail or glass of wine. Having been born on the 12th of August places her in the constellation of Leo, if one follows such things.\n\nAs I read the preliminaries, I came upon her instruction: <i>The best way to ask me out is by planning a date and telling me when and where.</i>\n\nI remember reading that, then thinking and contemplating: someone finally understands intention as the purest form of respect. I liked that immediately. It is direct, confident, and refreshingly clear. Here is a woman who knows precisely what she wants.",
+    "It began, as all things do, with a photograph. This took place at 8:50 p.m.\n\nI was scrolling without purpose until one image made me stop. There was an ease in it that could not have been manufactured—an effortless confidence, as though she had decided the dress was incidental and that she herself was the point. She was not merely wearing it; she was commanding it. For all intents and purposes, the dress was doing her a favour, not the other way round. I liked the photograph.",
+    "As the minutes crept towards 9:22pm, I introduced myself, and she followed shortly after. Every story must have a door; every syllable, a precursor to opening one. We exchanged pleasantries. I inquired about her Sunday.\n\nFrom there, the wordsmith in me delivered words with deliberate and playful satisfaction. I wanted to guess the backstory of the photograph in question. <i>I do want to try to guess the backstory of the photo, because the way you’re wearing that dress, it is like you’re doing it a favour.</i> She laughed at my impression, and then she opened up about the nature of that photograph. I smiled. Smirked, even. There is a particular pleasure in sensing, even through text alone, that you have begun to gauge what sort of person sits on the other side.",
+    "<i>I do like a challenge,</i> I told her.\n\nBeing perceptive as I am, I outlined my guess: she had bought the dress online for a London dinner party, snapped a photograph in the restaurant restroom, and mid-shot the sleeve gave out.\n\nHer response arrived, and I found myself laughing aloud.\n\n<i>That’s actually such a good first guess. Yes, I bought the dress online; it wasn’t for a dinner party though, it is a restaurant restroom, and the sleeves came like that—I was holding it up for a better shot.</i>\n\n<i>So basically I got it right on my first try,</i> I replied, still grinning.",
+    "Curiosity undimmed, I pressed further. <i>I’m actually curious now—were the sleeves built into the dress like that? Did you try tie it, at least?</i>\n\nShe laughed again, the sound reaching me through the screen. <i>It looked cute, kinda like a little cape situation going on.</i>\n\nThen, a moment later: <i>The sleeves are a small price to pay for it fitting like a glove.</i>\n\nThat phrase landed with the force of a quiet manifesto. Here is someone who understands that certain discomforts are not flaws but features; that looking as though you belong to yourself is worth the occasional inconvenience. I laughed again, but beneath the laughter I was paying attention in a different way. The mix of confidence and humour—so easy, so unforced—suggests I am speaking to a woman who has made peace with who she is and sees no need to pretend otherwise.",
+    "I pivoted as the conversation naturally allowed.\n\n<i>When it comes to looking good, it doesn’t come easy. And good things, like food, are worth it. Speaking of which, what’s the backstory of the restaurant you visited? Because judging by your profile, you’re really into food.</i>\n\n<i>I took my sister to the Shard for her birthday, had a cute little dinner. The food was amazing—made broccoli taste like a main character. I can’t deny that food is my love language. I’m glad that comes across.</i>\n\n<i>Broccoli as the main character? What restaurant is this?</i>\n\nI cannot recall the last time I was so genuinely curious about a plate of vegetables. The image of broccoli elevated to protagonist status amuses me greatly, but it also reveals something deeper. This is a person who pays attention to the world’s small pleasures and allows them to matter.",
+    "I press forward, because the conversation has acquired its own momentum and I am only too happy to follow.\n\n<i>The third picture speaks for itself. That plate looks healthy. Where was that taken—Paris?</i>\n\n<i>Yeah, a café in Paris. Tastes as good as it looks, too. I think that might have been the only proper French food I tried and liked apart from a croissant, so I have to go again, hopefully in the summer.</i>\n\nThere is a particular charm in someone who travels without pretension—who can confess that French cuisine, beyond a croissant, did not conquer them, and who still intends to return. It speaks of an appetite for experience that does not require everything to be perfect.",
+    "She then asks the question that seems to light something in the conversation.\n\n<i>Do you like to travel?</i>\n\n<i>Yes, I’m flying out this summer.</i>\n\n<i>Where to?</i>\n\n<i>Malta. Went there for my birthday solo and loved it.</i>\n\nI give her a small window into the rhythm of my year: how my friends and I fly to Europe each spring, and how each autumn I take myself off alone to somewhere new. A tradition, I explain, almost without thinking.",
+    "Her reply carries a wistful, laughing resignation that I immediately recognise. <i>Me and my friends’ plans never make it out of the group chat.</i>\n\nI laugh. That particular pain is universal. My response is a single word, but it carries the full weight of shared, theatrical heartbreak. <i>Pain.</i>\n\nThen she offers me another glimpse.\n\n<i>France was the first trip I planned by myself. I went to Turkey last year. I want to go again. How did you find it? Because France has been on my radar, honestly. Turkey I went two years ago, to Antalya.</i>\n\nI tell her Turkey is already on my list. <i>I want to go to Istanbul.</i>\n\n<i>Took the Eurostar and got around using the metro. I want to do the opposite. Went to Istanbul, want to see Antalya.</i>",
+    "Travel seems to weave through everything tonight—the restaurant restroom, the Parisian café, now Turkey and Malta. It occurs to me only now that we are not simply trading place names. We are saying, in a roundabout way, <i>I am curious about the world, and I am not afraid to explore it alone.</i> That sentiment feels like a mirror.\n\nI say, <i>I might have to do a day trip in Paris if that’s the case. I still have my whole itinerary for Antalya, funny enough.</i>\n\nHer response is immediate. <i>Oo, care to share?</i>\n\nAnd then, with disarming honesty: <i>I didn’t have an itinerary for France. It was sort of get there, have a place to sleep, then just vibes.</i>",
+    "It is at this point—somewhere between Antalya itineraries and French spontaneity—that I decide to test the waters. I sense the door is ajar, and the only remaining question is whether I will push it open. I push.\n\n<i>I’ll share, if I get your number. Seems fair, considering I nailed ninety-five per cent of the backstory behind your dress. Plus, it’s long, I’m not going to lie—I didn’t do half of it. So, inshallah and vibes.</i>\n\nShe comes through as I hoped, with a directness I immediately admire. <i>Yeah, that guess was really impressive. You can have my number.</i>",
+    "I wrap it up, keeping my tone light, as if this is merely the conclusion of a pleasant exchange.\n\n<i>Much appreciated. I’ll swing you a message with the itinerary right now before I go to bed.</i>",
+    "It is late now. I have sent her the itinerary, and I am writing this before sleep.\n\nThere was an ease I cannot quite articulate, a sense that I was not performing but simply talking with someone I already knew and yet to know. That is all I can say for now."
+  ];
+  const FULL_STORY = STORY_PARAGRAPHS.join('\n\n');
+  const storyChars = Array.from(FULL_STORY);
+  const outputEl = document.getElementById('typewriter-output');
+  const startBtnEl = document.getElementById('startBtn');
+  const pauseBtnEl = document.getElementById('pauseBtn');
+  const restartBtnEl = document.getElementById('restartBtn');
+  let twGen = 0, charIdx = 0, displayBuffer = '', pausedFlag = false;
+  const TYPE_NORMAL = 18, TYPE_PUNCT = 100, TYPE_COMMA = 55, TYPE_NEWLINE = 500;
+  function renderStory(text, showCur) {
+    outputEl.innerHTML = text.replace(/\n/g, '<br>') + (showCur ? '<span class="cursor-blink" aria-hidden="true"></span>' : '');
+  }
+  function _typeWriter(gen) {
+    if (gen !== twGen) return;
+    if (pausedFlag) return;
+    if (charIdx >= storyChars.length) { renderStory(FULL_STORY, false); return; }
+    const ch = storyChars[charIdx++];
+    displayBuffer += ch;
+    renderStory(displayBuffer, true);
+    outputEl.parentElement.scrollTop = outputEl.parentElement.scrollHeight;
+    let delay = TYPE_NORMAL;
+    if (ch === '\n') delay = TYPE_NEWLINE;
+    else if (ch === '.' || ch === '!' || ch === '?') delay = TYPE_PUNCT;
+    else if (ch === ',') delay = TYPE_COMMA;
+    setTimeout(() => _typeWriter(gen), delay);
+  }
+  function startStory() { twGen++; charIdx = 0; displayBuffer = ''; pausedFlag = false; startBtnEl.style.display = 'none'; pauseBtnEl.style.display = 'inline-flex'; restartBtnEl.style.display = 'inline-flex'; pauseBtnEl.textContent = 'Pause'; renderStory('', true); _typeWriter(twGen); }
+  function togglePause() { pausedFlag = !pausedFlag; pauseBtnEl.textContent = pausedFlag ? 'Continue' : 'Pause'; if (!pausedFlag) _typeWriter(twGen); }
+  function restartStory() { twGen++; pausedFlag = false; charIdx = 0; displayBuffer = ''; pauseBtnEl.textContent = 'Pause'; renderStory('', true); _typeWriter(twGen); }
+</script>
+</body>
+</html>
